@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Ocultar el icono por defecto del select */
+select {
+  appearance: none; /* Para navegadores modernos */
+  -webkit-appearance: none; /* Safari & Chrome */
+  -moz-appearance: none; /* Firefox */
+}

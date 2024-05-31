@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { convertCurrency } from "@/services";
 import { useExchangeRates } from "@/hooks";
-import { RateSelector } from "@/components";
+import { RateSelector, AmountInput, Loader } from "@/components";
 import { validateAmount } from "@/utilities";
+import { debounce } from "@/utilities";
 
 function CurrencyConverter() {
   const { rates, loading, error } = useExchangeRates();
@@ -15,10 +17,11 @@ function CurrencyConverter() {
   const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
   const [isConverting, setIsConverting] = useState<boolean>(false);
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const validateValue = validateAmount(value);
-    setAmount(validateValue);
+    const validatedValue = validateAmount(value);
+    setAmount(validatedValue);
+    debouncedConvertAmount(validatedValue, fromCurrency, toCurrency);
   };
 
   const handleFromCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -34,58 +37,69 @@ function CurrencyConverter() {
   };
 
   useEffect(() => {
-    const getConvertedAmount = async () => {
-      if (amount === "" || isNaN(parseFloat(amount))) {
-        setConvertedAmount(null);
-        return;
-      }
+    convertAmount(amount, fromCurrency, toCurrency);
+  }, [fromCurrency, toCurrency]);
 
-      setIsConverting(true);
-      try {
-        const rate = await convertCurrency(fromCurrency, toCurrency);
-        setConvertedAmount(parseFloat(amount) * rate);
-      } catch (error) {
-        console.error("Error converting currency:", error);
-      } finally {
-        setIsConverting(false);
-      }
-    };
-    getConvertedAmount();
-  }, [amount, fromCurrency, toCurrency]);
+  const convertAmount = async (amount: string, from: string, to: string) => {
+    if (amount === "" || isNaN(parseFloat(amount))) {
+      setConvertedAmount(null);
+      return;
+    }
+
+    setIsConverting(true);
+
+    try {
+      const rate = await convertCurrency(from, to);
+      setConvertedAmount(parseFloat(amount) * rate);
+    } catch (error) {
+      console.error("Error converting currency:", error);
+    } finally {
+      setIsConverting(false);
+    }
+  };
+
+  const debouncedConvertAmount = useCallback(debounce(convertAmount, 500), []);
 
   return (
-    <div>
-      <h1>Currency Converter</h1>
-      <div>
-        <input
-          type="text"
+    <div className="bg-neutral-50 p-10 rounded-xl shadow-xl">
+      <form
+        className="flex items-center gap-2"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <AmountInput
           value={amount}
-          onChange={handleAmountChange}
-          placeholder="Ingrese la cantidad"
+          handleChange={handleAmountChange}
+          placeHolder="Ingrese la cantidad"
+          currency={fromCurrency}
         />
         <RateSelector
           value={fromCurrency}
           handleChange={handleFromCurrencyChange}
           rates={rates}
+          label="Desde:"
         />
-        <button onClick={handleSwapCurrencies}>Invertir</button>
+        <button type="button" onClick={handleSwapCurrencies}>
+          Invertir
+        </button>
         <RateSelector
           value={toCurrency}
           handleChange={handleToCurrencyChange}
           rates={rates}
+          label="a"
         />
-      </div>
+      </form>
       {error ? (
         <div>{error}</div>
       ) : (
-        <h2>
+        <h2 className="text-xl">
           {amount} {fromCurrency} ={" "}
           {convertedAmount !== null ? convertedAmount.toFixed(2) : "000"}{" "}
           {toCurrency}
         </h2>
       )}
-      {loading && <div>Cargando datos de las monedas...</div>}
-      {isConverting && <div>Convirtiendo...</div>}
+
+      <Loader loading={loading} text="Cargando datos de las monedas..." />
+      <Loader loading={isConverting} text="Convirtiendo..." />
     </div>
   );
 }
