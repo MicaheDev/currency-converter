@@ -33,6 +33,8 @@ npm install
 yarn install
 # o
 pnpm install
+# o
+bun install
 ```
 
 ### Crear Variable de Entorno
