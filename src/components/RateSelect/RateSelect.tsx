@@ -16,13 +16,14 @@ function RateSelect({
   handleChange,
   rates,
   label,
+  id
 }: RateSelectProps) {
   const selectedCurrency = rates.find((rate) => rate.currency === value);
   const detail = selectedCurrency?.detail;
 
   function renderCurrencySelected() {
     if (!detail) {
-      return <>Seleccionar</>;
+      return <>Select</>;
     }
     return (
       <>
@@ -32,8 +33,8 @@ function RateSelect({
   }
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor="" className="text-xs">
+    <div className="flex flex-col w-full">
+      <label htmlFor={id} className="text-xs">
         {label}
       </label>
 
@@ -41,7 +42,10 @@ function RateSelect({
         {({ open }) => (
           <>
             <div className="relative">
-              <ListboxButton className="relative w-full min-w-[250px] h-[40px] cursor-default rounded-md bg-neutral-200 py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+              <ListboxButton
+                id={id}
+                className="relative w-full min-w-[250px] h-[40px] cursor-default rounded-md bg-neutral-200 py-1.5 pl-3 pr-10 text-left text-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              >
                 <span className="flex items-center">
                   <span className="ml-3 block truncate">
                     {renderCurrencySelected()}
@@ -64,8 +68,8 @@ function RateSelect({
                       key={currency}
                       className={({ focus }) =>
                         classNames(
-                          focus ? "bg-indigo-600 text-white" : "",
-                          !focus ? "text-gray-900" : "",
+                          focus ? "bg-indigo-500 text-neutral-50" : "",
+                          !focus ? "text-neutral-900" : "",
                           "relative cursor-default select-none py-2 pl-3 pr-9"
                         )
                       }
@@ -87,7 +91,7 @@ function RateSelect({
                           {selected ? (
                             <span
                               className={classNames(
-                                focus ? "text-white" : "text-indigo-600",
+                                focus ? "text-neutral-50" : "text-indigo-500",
                                 "absolute inset-y-0 right-0 flex items-center pr-4"
                               )}
                             >

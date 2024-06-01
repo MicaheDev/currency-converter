@@ -5,4 +5,5 @@ export interface RateSelectProps {
   handleChange: (value: string) => void;
   rates: ExchangeRate[];
   label: string
+  id: string
 }

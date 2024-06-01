@@ -15,7 +15,7 @@ export function useCurrencyConverter() {
 
   useEffect(() => {
     if (rates.length > 0 && fromCurrency && toCurrency) {
-      getRate(fromCurrency, toCurrency);
+      getNewRate(fromCurrency, toCurrency);
     }
   }, [rates, fromCurrency, toCurrency]);
 
@@ -29,7 +29,7 @@ export function useCurrencyConverter() {
     setConvertedAmount(parseFloat((parseFloat(amount) * rate).toFixed(2)));
   }
 
-  const getRate = async (from: string, to: string) => {
+  async function getNewRate(from: string, to: string) {
     setIsConverting(true);
 
     try {
@@ -37,10 +37,11 @@ export function useCurrencyConverter() {
       setRate(newRate);
     } catch (error) {
       console.error("Error converting currency:", error);
+      setError("Error converting currency, try again more later")
     } finally {
       setIsConverting(false);
     }
-  };
+  }
 
   const handleAmountChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +54,7 @@ export function useCurrencyConverter() {
         setError(null);
       }
 
-      setAmount(validAmount);  // Update state regardless of validation result
+      setAmount(validAmount); 
     },
     [setError]
   );

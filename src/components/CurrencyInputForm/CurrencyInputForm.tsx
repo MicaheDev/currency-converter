@@ -18,7 +18,7 @@ function CurrencyInputForm({
       <AmountInput
         value={amount}
         handleChange={handleAmountChange}
-        placeHolder="Ingrese la cantidad"
+        placeHolder="0.00"
         currency={fromCurrency}
         loader={loader}
         rates={rates}
@@ -30,6 +30,7 @@ function CurrencyInputForm({
         handleChange={handleFromCurrencyChange}
         rates={rates}
         label="from:"
+        id="fromCurrencySelect"
       />
       <button
         aria-label="swap currencies button"
@@ -44,6 +45,7 @@ function CurrencyInputForm({
         handleChange={handleToCurrencyChange}
         rates={rates}
         label="to"
+        id="toCurrencySelect"
       />
     </div>
   );

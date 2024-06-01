@@ -13,7 +13,7 @@ export async function fetchExchangeRates(
 
     return exchangeAdapter(response.data);
   } catch (error) {
-    throw new Error("Ha ocurrido un error al obtener las monedas disponibles");
+    throw new Error("An error occurred while fetching available currencies");
   }
 }
 
@@ -28,6 +28,6 @@ export async function convertCurrency(
     console.log(response.data.data)
     return response.data.data[to];
   } catch (error) {
-    throw new Error("Ha ocurrido un error al obtener las conversiones");
+    throw new Error("An error occurred while fetching conversions");
   }
 }
