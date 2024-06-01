@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import 'remixicon/fonts/remixicon.css'
 
 export const metadata: Metadata = {
   title: "Currency Converter",

@@ -1,6 +1,6 @@
 import CurrencyConverter from "./CurrencyConverter/CurrencyConverter";
-import RateSelector from "./RateSelector/RateSelector";
+import RateSelect from "./RateSelector/RateSelect";
 import AmountInput from "./AmountInput/AmountInput";
 import Loader from "./Loader/Loader";
 
-export { CurrencyConverter, RateSelector, AmountInput, Loader };
+export { CurrencyConverter, RateSelect, AmountInput, Loader };
