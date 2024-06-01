@@ -1,7 +1,11 @@
+import { ExchangeRate } from "@/models";
+
 export interface AmountInputProps {
   value: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeHolder: string;
   currency: string;
-  isLoading: boolean
+  loader: boolean;
+  rates: ExchangeRate[];
+  label: string
 }

@@ -1,5 +1,5 @@
 export interface LoaderProps {
-  loading: boolean;
+  loader: boolean;
   text?: string;
   sideText?: string
   loadIcon: boolean

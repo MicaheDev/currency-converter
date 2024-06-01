@@ -1,7 +1,7 @@
 import { LoaderProps } from "./types";
 
-function Loader({ loading, text, sideText, loadIcon }: LoaderProps) {
-  if (!loading) return <div>{sideText && sideText}</div>;
+function Loader({ loader, text, sideText, loadIcon }: LoaderProps) {
+  if (!loader) return <div>{sideText && sideText}</div>;
 
   return (
     <div>

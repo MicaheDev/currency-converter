@@ -2,66 +2,29 @@
 "use client";
 
 import { RateSelect, AmountInput, Loader } from "@/components";
-import { useState, useEffect, useCallback } from "react";
-import { convertCurrency } from "@/services";
-import { useExchangeRates } from "@/hooks";
-import { validateAmount } from "@/utilities";
-import { debounce } from "@/utilities";
+import { useCurrencyConverter } from "@/hooks";
 
 function CurrencyConverter() {
-  const { rates, loading, error } = useExchangeRates();
-
-  const [amount, setAmount] = useState<string>("1");
-  const [fromCurrency, setFromCurrency] = useState<string>("USD");
-  const [toCurrency, setToCurrency] = useState<string>("EUR");
-  const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
-  const [isConverting, setIsConverting] = useState<boolean>(false);
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const validatedValue = validateAmount(value);
-    setAmount(validatedValue);
-    debouncedConvertAmount(validatedValue, fromCurrency, toCurrency);
-  };
-
-  const handleFromCurrencyChange = (value: string) => setFromCurrency(value);
-
-  const handleToCurrencyChange = (value: string) => setToCurrency(value);
-
-  const handleSwapCurrencies = () => {
-    const temp = fromCurrency;
-    setFromCurrency(toCurrency);
-    setToCurrency(temp);
-  };
-
-  useEffect(() => {
-    convertAmount(amount, fromCurrency, toCurrency);
-  }, [fromCurrency, toCurrency]);
-
-  const convertAmount = async (amount: string, from: string, to: string) => {
-    if (amount === "" || isNaN(parseFloat(amount))) {
-      setConvertedAmount(null);
-      return;
-    }
-
-    setIsConverting(true);
-
-    try {
-      const rate = await convertCurrency(from, to);
-      setConvertedAmount(parseFloat(amount) * rate);
-    } catch (error) {
-      console.error("Error converting currency:", error);
-    } finally {
-      setIsConverting(false);
-    }
-  };
-
-  const debouncedConvertAmount = useCallback(debounce(convertAmount, 500), []);
+  const {
+    rates,
+    loading,
+    error,
+    amount,
+    fromCurrency,
+    toCurrency,
+    convertedAmount,
+    isConverting,
+    handleAmountChange,
+    handleFromCurrencyChange,
+    handleToCurrencyChange,
+    handleSwapCurrencies,
+  } = useCurrencyConverter();
 
   return (
     <div className="bg-neutral-50 p-10 rounded-xl shadow-xl">
+      <h1 className="text-2xl mb-4 font-bold">Currency Converter</h1>
       <form
-        className="flex items-center gap-2 max-md:flex-col"
+        className="flex items-end gap-2 max-md:flex-col max-md:items-start"
         onSubmit={(e) => e.preventDefault()}
       >
         <AmountInput
@@ -69,12 +32,15 @@ function CurrencyConverter() {
           handleChange={handleAmountChange}
           placeHolder="Ingrese la cantidad"
           currency={fromCurrency}
-          isLoading={isConverting}
+          loader={isConverting}
+          rates={rates}
+          label="Amount"
         />
         <RateSelect
           value={fromCurrency}
           handleChange={handleFromCurrencyChange}
           rates={rates}
+          label="from:"
         />
         <button
           aria-label="Invertir monedas"
@@ -88,10 +54,11 @@ function CurrencyConverter() {
           value={toCurrency}
           handleChange={handleToCurrencyChange}
           rates={rates}
+          label="to"
         />
       </form>
 
-      <div>{error}</div>
+      {error && <div>{error}</div>}
 
       <h3 className="text-md">
         {amount} {fromCurrency} =
@@ -102,11 +69,11 @@ function CurrencyConverter() {
       </h2>
 
       <div className="h-[10px]">
-      <Loader
-        loading={loading}
-        text="Cargando datos de las monedas..."
-        loadIcon={false}
-      />
+        <Loader
+          loader={loading}
+          text="Cargando datos de las monedas..."
+          loadIcon={false}
+        />
       </div>
     </div>
   );
