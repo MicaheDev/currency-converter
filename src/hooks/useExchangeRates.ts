@@ -21,6 +21,6 @@ export const useExchangeRates = () => {
     getRates();
   }, []);
 
-  return { rates, loading, error };
+  return { rates, loading, error, setError };
 };
 

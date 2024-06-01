@@ -8,7 +8,8 @@ function AmountInput({
   currency,
   loader,
   rates,
-  label
+  label,
+  id
 }: AmountInputProps) {
   const selectedCurrency = rates.find((rate) => rate.currency === currency);
   const detail = selectedCurrency?.detail;
@@ -21,7 +22,7 @@ function AmountInput({
   }
   return (
     <div className="flex flex-col">
-      <label htmlFor=""  className="text-xs">{label}</label>
+      <label htmlFor={id}  className="text-xs">{label}</label>
       <div className="relative">
       <div className="absolute inset-y-0 end-0 flex items-center pr-4 pointer-events-none font-bold text-indigo-500 sm:text-sm sm:leading-6">
         <Loader loader={loader} sideText={renderSymbol()} loadIcon={true} />
@@ -33,6 +34,7 @@ function AmountInput({
         value={value}
         onChange={handleChange}
         placeholder={placeHolder}
+        id={id}
       />
     </div>
     </div>

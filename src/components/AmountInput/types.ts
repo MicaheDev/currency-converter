@@ -7,5 +7,6 @@ export interface AmountInputProps {
   currency: string;
   loader: boolean;
   rates: ExchangeRate[];
-  label: string
+  label: string,
+  id: string
 }

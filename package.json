@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.0.4",
     "axios": "^1.7.2",
+    "big.js": "^6.2.1",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
+    "@types/big.js": "^6.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

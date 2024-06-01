@@ -1,28 +1,40 @@
 import { useState, useEffect, useCallback } from "react";
 import { convertCurrency } from "@/services";
-import { validateAmount, debounce } from "@/utilities";
+import { validateAmount } from "@/utilities";
 import { useExchangeRates } from "@/hooks";
 
 export function useCurrencyConverter() {
-  const { rates, loading, error } = useExchangeRates();
+  const { rates, loading, error, setError } = useExchangeRates();
 
   const [amount, setAmount] = useState<string>("1");
   const [fromCurrency, setFromCurrency] = useState<string>("USD");
   const [toCurrency, setToCurrency] = useState<string>("EUR");
   const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
   const [isConverting, setIsConverting] = useState<boolean>(false);
+  const [rate, setRate] = useState<number | null>(null);
 
-  const convertAmount = async (amount: string, from: string, to: string) => {
-    if (amount === "" || isNaN(parseFloat(amount))) {
-      setConvertedAmount(null);
-      return;
+  useEffect(() => {
+    if (rates.length > 0 && fromCurrency && toCurrency) {
+      getRate(fromCurrency, toCurrency);
     }
+  }, [rates, fromCurrency, toCurrency]);
 
+  useEffect(() => {
+    if (rate && !isNaN(parseFloat(amount))) {
+      calculateAmount(rate);
+    }
+  }, [rate, amount]);
+
+  function calculateAmount(rate: number) {
+    setConvertedAmount(parseFloat((parseFloat(amount) * rate).toFixed(2)));
+  }
+
+  const getRate = async (from: string, to: string) => {
     setIsConverting(true);
 
     try {
-      const rate = await convertCurrency(from, to);
-      setConvertedAmount(parseFloat(amount) * rate);
+      const newRate = await convertCurrency(from, to);
+      setRate(newRate);
     } catch (error) {
       console.error("Error converting currency:", error);
     } finally {
@@ -30,16 +42,20 @@ export function useCurrencyConverter() {
     }
   };
 
-  const debouncedConvertAmount = useCallback(debounce(convertAmount, 500), []);
-
   const handleAmountChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
-      const validatedValue = validateAmount(value);
-      setAmount(validatedValue);
-      debouncedConvertAmount(validatedValue, fromCurrency, toCurrency);
+      const { validAmount, error } = validateAmount(value);
+
+      if (error) {
+        setError(error);
+      } else {
+        setError(null);
+      }
+
+      setAmount(validAmount);  // Update state regardless of validation result
     },
-    [fromCurrency, toCurrency]
+    [setError]
   );
 
   const handleFromCurrencyChange = useCallback((value: string) => {
@@ -51,12 +67,8 @@ export function useCurrencyConverter() {
   }, []);
 
   const handleSwapCurrencies = useCallback(() => {
-    setFromCurrency((prev) => toCurrency);
-    setToCurrency((prev) => fromCurrency);
-  }, [fromCurrency, toCurrency]);
-
-  useEffect(() => {
-    convertAmount(amount, fromCurrency, toCurrency);
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
   }, [fromCurrency, toCurrency]);
 
   return {
