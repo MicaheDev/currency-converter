@@ -7,6 +7,13 @@ Esta aplicación te permite convertir monedas utilizando la [API de Free Currenc
 
 ![Preview Mobile](./previewMobile.png)
 
+### Requerimientos
+
+- **Selección de Monedas**  
+- **Cantidad a Convertir**  
+- **Visualización de Resultados**  
+- **Interfaz Responsiva**  
+
 ### Clonar el Repositorio
 
 ```bash
