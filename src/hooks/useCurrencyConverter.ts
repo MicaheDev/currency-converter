@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { convertCurrency } from "@/services";
-import { validateAmount } from "@/utilities";
+import { calculateAmount, validateAmount } from "@/utilities";
 import { useExchangeRates } from "@/hooks";
+import { CurrencyDetail } from "@/models";
 
 export function useCurrencyConverter() {
   const { rates, loading, error, setError } = useExchangeRates();
@@ -11,37 +12,54 @@ export function useCurrencyConverter() {
   const [toCurrency, setToCurrency] = useState<string>("EUR");
   const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
   const [isConverting, setIsConverting] = useState<boolean>(false);
-  const [rate, setRate] = useState<number | null>(null);
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
+  const [fromCurrencyDetails, setFromCurrencyDetails] =
+    useState<CurrencyDetail | null>(null);
+  const [toCurrencyDetails, setToCurrencyDetails] =
+    useState<CurrencyDetail | null>(null);
 
   useEffect(() => {
     if (rates.length > 0 && fromCurrency && toCurrency) {
-      getNewRate(fromCurrency, toCurrency);
+      updateExchangeRate(fromCurrency, toCurrency);
+      const updateCurrencyDetails = () => {
+        const fromDetail = rates.find(
+          (rate) => rate.currency === fromCurrency,
+        )?.detail;
+        if (fromDetail) {
+          setFromCurrencyDetails(fromDetail);
+        }
+
+        const toDetail = rates.find(
+          (rate) => rate.currency === toCurrency,
+        )?.detail;
+        if (toDetail) {
+          setToCurrencyDetails(toDetail);
+        }
+      };
+
+      updateCurrencyDetails();
     }
   }, [rates, fromCurrency, toCurrency]);
 
   useEffect(() => {
-    if (rate && !isNaN(parseFloat(amount))) {
-      calculateAmount(rate);
+    if (exchangeRate && !isNaN(parseFloat(amount))) {
+      const calculatedAmount = calculateAmount(amount, exchangeRate);
+      setConvertedAmount(calculatedAmount);
     }
-  }, [rate, amount]);
+  }, [exchangeRate, amount]);
 
-  function calculateAmount(rate: number) {
-    setConvertedAmount(parseFloat((parseFloat(amount) * rate).toFixed(2)));
-  }
-
-  async function getNewRate(from: string, to: string) {
+  const updateExchangeRate = async (from: string, to: string) => {
     setIsConverting(true);
 
     try {
       const newRate = await convertCurrency(from, to);
-      setRate(newRate);
+      setExchangeRate(newRate);
     } catch (error) {
       console.error("Error converting currency:", error);
-      setError("You have exceeded the conversion limit");
     } finally {
       setIsConverting(false);
     }
-  }
+  };
 
   const handleAmountChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,9 +72,9 @@ export function useCurrencyConverter() {
         setError(null);
       }
 
-      setAmount(validAmount);
+      setAmount(validAmount); // Update state regardless of validation result
     },
-    [setError]
+    [setError],
   );
 
   const handleFromCurrencyChange = useCallback((value: string) => {
@@ -79,11 +97,13 @@ export function useCurrencyConverter() {
     amount,
     fromCurrency,
     toCurrency,
-    convertedAmount,
     isConverting,
     handleAmountChange,
     handleFromCurrencyChange,
     handleToCurrencyChange,
     handleSwapCurrencies,
+    convertedAmount,
+    fromCurrencyDetails,
+    toCurrencyDetails,
   };
 }

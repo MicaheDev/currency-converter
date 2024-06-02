@@ -34,7 +34,7 @@ function CurrencyInputForm({
       />
       <button
         aria-label="swap currencies button"
-        className="bg-neutral-900 px-4 h-[40px] text-neutral-50 rounded-md"
+        className="h-[40px] rounded-md bg-neutral-900 px-4 text-neutral-50"
         type="button"
         onClick={handleSwapCurrencies}
       >

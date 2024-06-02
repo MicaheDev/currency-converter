@@ -18,19 +18,19 @@ function AmountInput({
     if (!detail) return "$";
     return detail.symbol_native;
   }
-  
+
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <label htmlFor={id} className="text-xs">
         {label}
       </label>
       <div className="relative">
-        <div className="absolute inset-y-0 end-0 flex items-center pr-4 pointer-events-none font-bold text-indigo-500 sm:text-sm sm:leading-6">
+        <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pr-4 font-bold text-indigo-500 sm:text-sm sm:leading-6">
           {loader ? <SpinLoader /> : renderSymbol()}
         </div>
 
         <input
-          className="h-[40px] w-full bg-neutral-50 border border-neutral-300 rounded-md focus:outline-2 focus:outline-indigo-500 flex pr-12 p-4 sm:text-sm sm:leading-6"
+          className="flex h-[40px] w-full rounded-md border border-neutral-300 bg-neutral-50 p-4 pr-12 focus:outline-2 focus:outline-indigo-500 sm:text-sm sm:leading-6"
           type="text"
           value={value}
           onChange={handleChange}

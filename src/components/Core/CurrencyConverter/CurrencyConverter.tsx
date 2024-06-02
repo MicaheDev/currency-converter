@@ -17,14 +17,16 @@ function CurrencyConverter() {
     handleFromCurrencyChange,
     handleToCurrencyChange,
     handleSwapCurrencies,
+    fromCurrencyDetails,
+    toCurrencyDetails,
   } = useCurrencyConverter();
 
   return (
-    <div className="bg-neutral-50 p-10 max-md:py-6 max-md:px-4 rounded-xl shadow-xl border-2 border-indigo-500 w-[100%]">
+    <div className="max-md:backdrop-filter-blur-md m-auto w-full rounded-xl border-2 border-indigo-500 bg-neutral-50 p-10 shadow-xl max-md:h-screen max-md:w-screen max-md:rounded-none max-md:border-none max-md:bg-white/90 max-md:px-4 max-md:py-6">
       <h1 className="text-2xl font-black text-indigo-500">
         Currency Converter
       </h1>
-      <p className="text-sm mb-2 text-neutral-500">
+      <p className="mb-2 text-sm text-neutral-500">
         Welcome to our currency converter!
       </p>
       <CurrencyInputForm
@@ -46,6 +48,8 @@ function CurrencyConverter() {
         fromCurrency={fromCurrency}
         convertedAmount={convertedAmount}
         toCurrency={toCurrency}
+        fromCurrencyDetails={fromCurrencyDetails}
+        toCurrencyDetails={toCurrencyDetails}
       />
 
       <Loader loader={loading} text="Loading Currencies..." />

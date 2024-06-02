@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <SmokeBackground />
-      <div className="h-screen grid place-content-center">
+      <div className="flex h-screen w-screen flex-col items-center justify-center">
         <main>
           <CurrencyConverter />
         </main>

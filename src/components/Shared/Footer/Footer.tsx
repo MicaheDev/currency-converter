@@ -1,11 +1,11 @@
 function Footer() {
   return (
-    <footer className="max-md:flex-col max-md:gap-0 text-center text-neutral-50 p-4 flex gap-2 justify-center">
+    <footer className="flex justify-center gap-2 p-4 text-center text-neutral-50 max-md:fixed max-md:bottom-0 max-md:m-auto max-md:flex-col max-md:gap-0 max-md:text-neutral-900">
       <span>Currency Converter - 2024</span>
       <a
         href="https://github.com/MicaheDev/currency-converter"
         target="_blank"
-        className="text-emerald-500 hover:underline font-medium"
+        className="font-medium text-emerald-500 hover:underline"
       >
         View on GitHub
       </a>

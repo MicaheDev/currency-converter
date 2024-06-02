@@ -46,7 +46,7 @@ const SmokeBackground = () => {
         particle.position.set(
           Math.random() * 500 - 250,
           Math.random() * 500 - 250,
-          Math.random() * 1000 - 100
+          Math.random() * 1000 - 100,
         );
         particle.rotation.z = Math.random() * 360;
 
@@ -64,6 +64,12 @@ const SmokeBackground = () => {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
+        if (window.innerWidth <= 768) {
+          renderer.setClearColor(0xffffff, 1);
+        } else {
+          renderer.setClearColor(0x18181b, 1);
+
+        }
       }
     };
 
@@ -82,6 +88,7 @@ const SmokeBackground = () => {
 
     return () => {
       window.removeEventListener("resize", resize);
+      
     };
   }, []);
 
@@ -89,7 +96,12 @@ const SmokeBackground = () => {
     initThree();
   }, [initThree]);
 
-  return <div ref={rendererContainerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -10 }} />;
+  return (
+    <div
+      ref={rendererContainerRef}
+      className="fixed inset-0 -z-10 h-screen w-screen bg-neutral-900"
+    />
+  );
 };
 
 export default SmokeBackground;

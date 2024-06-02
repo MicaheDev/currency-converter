@@ -5,11 +5,11 @@ interface ErrorDisplayProps {
 function ErrorDisplay({ error }: ErrorDisplayProps) {
   return (
     <div
-      className={`transition-opacity text-sm py-2 text-red-500 font-bold ${
+      className={`py-2 text-sm font-bold text-red-500 transition-opacity ${
         error ? "opacity-100" : "opacity-0"
       }`}
     >
-      <span className="inline-block max-md:max-w-[230px] text-wrap">
+      <span className="inline-block text-wrap max-md:max-w-[230px]">
         {error}
       </span>
     </div>
