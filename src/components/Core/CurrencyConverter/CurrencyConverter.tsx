@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader, CurrencyInputForm, Result } from "@/components";
+import { Loader, CurrencyInputForm, Result, ErrorDisplay } from "@/components";
 import { useCurrencyConverter } from "@/hooks";
 
 function CurrencyConverter() {
@@ -20,11 +20,13 @@ function CurrencyConverter() {
   } = useCurrencyConverter();
 
   return (
-    <div className="bg-neutral-50 p-10 max-md:py-6 max-md:px-4 rounded-xl shadow-xl border-2 border-indigo-500">
+    <div className="bg-neutral-50 p-10 max-md:py-6 max-md:px-4 rounded-xl shadow-xl border-2 border-indigo-500 w-[100%]">
       <h1 className="text-2xl font-black text-indigo-500">
         Currency Converter
       </h1>
-      <p className="text-sm mb-2 text-neutral-500">Welcome to our currency converter!</p>
+      <p className="text-sm mb-2 text-neutral-500">
+        Welcome to our currency converter!
+      </p>
       <CurrencyInputForm
         amount={amount}
         handleAmountChange={handleAmountChange}
@@ -37,15 +39,7 @@ function CurrencyConverter() {
         loader={isConverting}
       />
 
-      <div
-        className={`transition-opacity text-sm h-2 text-red-500 font-bold ${
-          error ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <span className="inline-block max-md:max-w-[230px] overflow-hidden whitespace-nowrap overflow-ellipsis">
-          {error}
-        </span>
-      </div>
+      <ErrorDisplay error={error} />
 
       <Result
         amount={amount}

@@ -37,7 +37,7 @@ export function useCurrencyConverter() {
       setRate(newRate);
     } catch (error) {
       console.error("Error converting currency:", error);
-      setError("Error converting currency, try again more later")
+      setError("You have exceeded the conversion limit");
     } finally {
       setIsConverting(false);
     }
@@ -54,7 +54,7 @@ export function useCurrencyConverter() {
         setError(null);
       }
 
-      setAmount(validAmount); 
+      setAmount(validAmount);
     },
     [setError]
   );

@@ -1,19 +1,23 @@
-import CurrencyConverter from "./CurrencyConverter/CurrencyConverter";
-import RateSelect from "./RateSelect/RateSelect";
-import AmountInput from "./AmountInput/AmountInput";
-import Loader from "./Loader/Loader";
-import CurrencyInputForm from "./CurrencyInputForm/CurrencyInputForm";
-import Result from "./Result/Result";
-import SpinLoader from "./SpinLoader/SpinLoader";
-import SmokeBackground from "./SmokeBackground/SmokeBackground";
+import AmountInput from "./Core/AmountInput/AmountInput";
+import CurrencyConverter from "./Core/CurrencyConverter/CurrencyConverter";
+import CurrencyInputForm from "./Core/CurrencyInputForm/CurrencyInputForm";
+import RateSelect from "./Core/RateSelect/RateSelect";
+import Result from "./Core/Result/Result";
+import Loader from "./Shared/Loader/Loader";
+import SmokeBackground from "./Shared/SmokeBackground/SmokeBackground";
+import SpinLoader from "./Shared/SpinLoader/SpinLoader";
+import Footer from "./Shared/Footer/Footer";
+import ErrorDisplay from "./Shared/ErrorDisplay/ErrorDisplay";
 
 export {
+  AmountInput,
   CurrencyConverter,
   CurrencyInputForm,
   RateSelect,
-  AmountInput,
-  Loader,
   Result,
+  SmokeBackground,
   SpinLoader,
-  SmokeBackground
+  Loader,
+  Footer,
+  ErrorDisplay
 };
