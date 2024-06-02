@@ -12,6 +12,8 @@ function CurrencyInputForm({
   handleToCurrencyChange,
   rates,
   loader,
+  fromCurrencyDetails,
+  toCurrencyDetails
 }: CurrencyInputFormProps) {
   return (
     <div className="flex items-end gap-2 max-md:flex-col max-md:items-start">
@@ -19,9 +21,8 @@ function CurrencyInputForm({
         value={amount}
         handleChange={handleAmountChange}
         placeHolder="0.00"
-        currency={fromCurrency}
         loader={loader}
-        rates={rates}
+        fromCurrencyDetails={fromCurrencyDetails}
         label="Amount"
         id="amountInput"
       />
@@ -31,6 +32,7 @@ function CurrencyInputForm({
         rates={rates}
         label="from:"
         id="fromCurrencySelect"
+        details={fromCurrencyDetails}
       />
       <button
         aria-label="swap currencies button"
@@ -46,6 +48,7 @@ function CurrencyInputForm({
         rates={rates}
         label="to"
         id="toCurrencySelect"
+        details={toCurrencyDetails}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { ExchangeRate } from "@/models";
+import { CurrencyDetail, ExchangeRate } from "@/models";
 
 export interface RateSelectProps {
   value: string;
@@ -6,4 +6,5 @@ export interface RateSelectProps {
   rates: ExchangeRate[];
   label: string
   id: string
+  details: CurrencyDetail | null
 }

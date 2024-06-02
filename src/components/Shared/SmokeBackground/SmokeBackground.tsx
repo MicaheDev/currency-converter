@@ -5,9 +5,10 @@ import * as THREE from "three";
 
 const SmokeBackground = () => {
   const rendererContainerRef = useRef<HTMLDivElement | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 
   const initThree = useCallback(() => {
-    if (!rendererContainerRef.current) return;
+    if (!rendererContainerRef.current || window.innerWidth <= 768) return;
 
     const width = rendererContainerRef.current.clientWidth;
     const height = rendererContainerRef.current.clientHeight;
@@ -19,8 +20,9 @@ const SmokeBackground = () => {
     renderer.setPixelRatio(window.devicePixelRatio); // Asegura que el renderizado se vea bien en pantallas de alta densidad de píxeles
     renderer.setClearColor(0x18181b, 1);
     rendererContainerRef.current.appendChild(renderer.domElement);
+    rendererRef.current = renderer;
 
-    const light = new THREE.DirectionalLight(0xffffff, 0.1);
+    const light = new THREE.DirectionalLight(0xffffff, 0.3);
     light.position.set(-1, 3, 1);
     scene.add(light);
 
@@ -64,16 +66,20 @@ const SmokeBackground = () => {
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
-        if (window.innerWidth <= 768) {
-          renderer.setClearColor(0xffffff, 1);
-        } else {
-          renderer.setClearColor(0x18181b, 1);
 
+        if (window.innerWidth <= 768 && rendererRef.current) {
+          rendererRef.current.dispose();
+          rendererRef.current = null;
+          rendererContainerRef.current.innerHTML = "";
+        } else if (window.innerWidth > 768 && !rendererRef.current) {
+          initThree();
         }
       }
     };
 
     const animate = () => {
+      if (!rendererRef.current) return;
+
       requestAnimationFrame(animate);
 
       smokeParticles.forEach((particle) => {
@@ -88,7 +94,13 @@ const SmokeBackground = () => {
 
     return () => {
       window.removeEventListener("resize", resize);
-      
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+        rendererRef.current = null;
+        if (rendererContainerRef.current) {
+          rendererContainerRef.current.innerHTML = "";
+        }
+      }
     };
   }, []);
 

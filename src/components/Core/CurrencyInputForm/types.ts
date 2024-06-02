@@ -1,4 +1,4 @@
-import { ExchangeRate } from "@/models";
+import { CurrencyDetail, ExchangeRate } from "@/models";
 
 export interface CurrencyInputFormProps {
     amount: string;
@@ -10,4 +10,6 @@ export interface CurrencyInputFormProps {
     handleToCurrencyChange: (value: string) => void;
     rates: ExchangeRate[];
     loader: boolean;
+    fromCurrencyDetails: CurrencyDetail | null
+    toCurrencyDetails: CurrencyDetail | null
   }

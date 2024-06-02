@@ -17,17 +17,15 @@ function RateSelect({
   rates,
   label,
   id,
+  details,
 }: RateSelectProps) {
-  const selectedCurrency = rates.find((rate) => rate.currency === value);
-  const detail = selectedCurrency?.detail;
-
   function renderCurrencySelected() {
-    if (!detail) {
+    if (!details) {
       return <>Select</>;
     }
     return (
       <>
-        {detail.code} - {detail.name}
+        {details.code} - {details.name}
       </>
     );
   }

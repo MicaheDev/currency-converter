@@ -5,18 +5,16 @@ function AmountInput({
   value,
   handleChange,
   placeHolder,
-  currency,
   loader,
-  rates,
   label,
   id,
+  fromCurrencyDetails
 }: AmountInputProps) {
-  const selectedCurrency = rates.find((rate) => rate.currency === currency);
-  const detail = selectedCurrency?.detail;
+
 
   function renderSymbol(): string {
-    if (!detail) return "$";
-    return detail.symbol_native;
+    if (!fromCurrencyDetails) return "$";
+    return fromCurrencyDetails.symbol_native;
   }
 
   return (
