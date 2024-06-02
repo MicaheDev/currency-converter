@@ -8,7 +8,7 @@ function Result({
   toCurrency,
 }: ResultProps) {
   return (
-    <section className="my-4 text-neutral-900">
+    <section className="my-2 text-neutral-900">
       <div className="flex gap-1 text-lg">
         <h4 className="max-w-[500px] max-md:max-w-[200px] overflow-hidden text-ellipsis">
           {amount}

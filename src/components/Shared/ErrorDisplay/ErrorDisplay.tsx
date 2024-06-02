@@ -5,7 +5,7 @@ interface ErrorDisplayProps {
 function ErrorDisplay({ error }: ErrorDisplayProps) {
   return (
     <div
-      className={`transition-opacity text-sm mb-2 text-red-500 font-bold ${
+      className={`transition-opacity text-sm py-2 text-red-500 font-bold ${
         error ? "opacity-100" : "opacity-0"
       }`}
     >
